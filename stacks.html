@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>stacks creator</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="domarrow.css" />
+    <script type="text/javascript" src="domarrow.js"></script>
+
+    <style>
+        table,
+        tr,
+        th,
+        td {
+            border: 1px solid black;
+            font-size: 20px;
+        }
+
+        table {
+            border-top: 0px;
+            border-collapse: separate;
+            border-spacing: 0.3em 1em;
+        }
+
+        tr {
+            border-top: 0px solid black;
+            padding: 10px;
+        }
+
+        td:first-child {
+            width: 33%;
+        }
+
+        tr>td {
+            padding-bottom: 1em;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+
+        .varname {
+            border: none;
+        }
+
+        .varname input,
+        .varvalue input {
+            width: 20px;
+
+            text-align: right;
+            border: none;
+        }
+
+        .varvalue {
+            width: auto;
+        }
+
+        #container {
+            display: flex;
+            align-items: flex-end;
+            text-align: center;
+        }
+
+        .deleteRow {
+            border: none;
+            cursor: pointer;
+            border: 1px solid #cccccc;
+            background: #f7f7f7;
+        }
+
+        td:hover {
+            background: #fbfbfb;
+        }
+
+        .deleteRow:hover {
+            background: #f1eeee;
+        }
+
+        .area {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .headlines {
+            cursor: pointer;
+        }
+
+        .headline {
+            margin-right: 15px;
+            margin-left: 35px;
+            height: 100px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-flow: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .exportable {
+            width: 200px;
+        }
+
+        button {
+            display: inline-block;
+            padding: 0.5em 1.45em;
+            margin: 0.1em;
+            border: 0.15em solid #CCCCCC;
+            box-sizing: border-box;
+            text-decoration: none;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-weight: 400;
+            color: #000000;
+            background-color: #CCCCCC;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        button:hover {
+            border-color: #7a7a7a;
+        }
+
+        button:active {
+            background-color: #999999;
+        }
+
+        @media all and (max-width:30em) {
+            button {
+                display: block;
+                margin: 0.2em auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+
+    <div id="container">
+        <div id="area_1" class="area">
+            <div class="headlines">
+                <h5 class="headline" id="h_1" onclick="changeTitle(this)">hello</h5>
+
+
+            </div>
+            <div>
+                <button id="connect" onclick="javascript:connectStack(this)">ערך למחסנית מימין</button>
+                <button onclick="javascript:add_column(this)">הוסף מחסנית</button>
+                <button onclick="javascript:appendRow(this)">הוספת קומה</button>
+
+
+                <br><br>
+                <table id="main">
+                    <tr id="row1">
+                        <td class="deleteRow"><img onclick='deleteRow(this)' style="    width: 32px;"
+                                src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/basket-64.png">
+                            <img onclick="addBox(this)" style="width: 32px;"
+                                src="https://cdn3.iconfinder.com/data/icons/flat-circle-content/512/flat-style-circle-add-2-64.png">
+                        </td>
+
+                        <td class="varname"><input type="text" value="foo"
+                                onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';"
+                                onchange="this.setAttribute('value', this.value);"></td>
+                        <td class="varvalue"><img onclick="deleteBox(this)"
+                                style=" filter: grayscale(100%);   width: 24px;"
+                                src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/basket-64.png"><input
+                                type="text" value="0"
+                                onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px'"
+                                onchange="this.setAttribute('value', this.value);"></td>
+
+
+                        <td class="varname"><input type="text" value="bar"
+                                onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';"
+                                onchange="this.setAttribute('value', this.value);"></td>
+                        <td class="varvalue"><img onclick="deleteBox(this)"
+                                style="  filter: grayscale(100%);  width: 24px;"
+                                src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/basket-64.png"><input
+                                type="text" value="0"
+                                onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px'"
+                                onchange="this.setAttribute('value', this.value);"></td>
+
+
+
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <button id='export' style="margin-top: 20px; margin-left: 200px;" onclick="exportButton()">ייצא כתמונה</button>
+    <div id="arrowsHolder"></div>
+    <script>
+        var rowids = 2;
+        var areaids = 2;
+        // append row to the HTML table
+        function connectStack(el) {
+            var currentArea = el.parentNode.parentNode;
+            var allAreas = Array.prototype.slice.call(currentArea.parentNode.querySelectorAll(".area"));
+            var index = allAreas.indexOf(currentArea);
+            if (typeof allAreas[parseInt(index) + 1] === 'undefined')
+                alert("can not connect");
+            else {
+                var name = window.prompt("ערך עובר:");
+                while (name === "")
+                    var name = window.prompt("ערך עובר:");
+                document.getElementById("arrowsHolder").innerHTML += "<connection from=\"#" + currentArea.id + "\" to=\"#" + allAreas[parseInt(index) + 1].id + "\" color=\"black\" fromX=\"1\" fromY=\"0.25\" toY=\"0.25\" toX=\"0.25\" tail><p onclick='changeTitle(this)'>" + name + "</p></connection>"
+            }
+        }
+        function appendRow(el) {
+            var tbl = el.parentNode.querySelector('table');
+            var row = tbl.insertRow(0);
+
+            row.id = "row" + rowids;
+            row.innerHTML = row.parentNode.querySelectorAll('tr')[row.parentNode.querySelectorAll('tr').length - 1].innerHTML;
+            row.insertAdjacentHTML('afterend', "<td class='seperator' id='" + "seperator_row" + rowids + "' colspan=\"100%\" style=\"padding:0;\"></td></div>");
+            // var name = window.prompt("שם הקומה:");
+            // while (name === "")
+            //     var name = window.prompt("שם הקומה:");
+            var name = "sample";
+            tbl.parentNode.parentNode.querySelector(".headlines").innerHTML = "<h5 onclick=\"changeTitle(this)\" class='headline' id='h_" + rowids + "'>" + name + "</h5>" + tbl.parentNode.parentNode.querySelector(".headlines").innerHTML
+            rowids++;
+        }
+
+        function add_column(el) {
+            document.getElementById("container").innerHTML += '<div id="area_' + areaids + '" class="area">' + document.getElementById("container").querySelectorAll(".area")[document.getElementById("container").querySelectorAll(".area").length - 1].innerHTML + '</div>';
+            document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].id = "main_" + (areaids);
+            areaids++;
+        }
+
+        function deleteRow(el) {
+            if (document.querySelectorAll("tr").length == 1) {
+                alert("Can't delete the last row");
+                return false;
+            }
+
+            if (el.parentNode.parentNode.isEqualNode(el.parentNode.parentNode.parentNode.querySelectorAll("tr")[el.parentNode.parentNode.parentNode.querySelectorAll("tr").length - 1])) {
+                console.log("check");
+                if (el.parentNode.parentNode.parentNode.querySelectorAll("tr").length <= 1)
+                    deleteTable(el.parentNode.parentNode.parentNode);
+                else {
+                    var seperators = el.parentNode.parentNode.parentNode.querySelectorAll(".seperator");
+                    seperators[seperators.length - 1].parentNode.outerHTML = "";
+                }
+
+            }
+
+            if (el.parentNode.parentNode.parentNode.querySelectorAll("tr").length <= 1) {
+                var id = el.parentNode.parentNode.id.slice(-1);
+                console.log(id);
+                var name = "#seperator_row" + id;
+                // el.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#h_" + id).outerHTML = "";
+                deleteTable(el.parentNode.parentNode.parentNode);
+            }
+            else {
+                var id = el.parentNode.parentNode.id.slice(-1);
+                console.log(id);
+                var name = "#seperator_row" + id;
+                try {
+                    console.log(el.parentNode.parentNode.parentNode.parentNode);
+                    el.parentNode.parentNode.parentNode.parentNode.querySelector(name).parentNode.outerHTML = "";
+                }
+                catch {
+
+                }
+                console.log(name);
+                console.log(el.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#h_" + id)); //area
+
+                el.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#h_" + id).outerHTML = "";
+                el.parentNode.parentNode.parentNode.removeChild(el.parentNode.parentNode);
+            }
+
+        }
+
+        function changeTitle(title) {
+            var name = window.prompt("הכנס ערך חדש:");
+            while (name === "")
+                var name = window.prompt("הכנס ערך חדש:");
+            title.innerHTML = name;
+        }
+
+        function deleteBox(box) {
+            var nodes = Array.prototype.slice.call(box.parentNode.parentNode.querySelectorAll(".varvalue"));
+            var index = nodes.indexOf(box.parentNode);
+            box.parentNode.parentNode.querySelectorAll(".varname")[index].outerHTML = "";
+            box.parentNode.parentNode.querySelectorAll(".varvalue")[index].outerHTML = "";
+        }
+
+        function addBox(el) {
+            var row = el.parentNode.parentNode;
+            row.innerHTML += '<td class="varname" ><input type="text" value="sample" style="width:45px;" onkeypress="this.style.width = ((this.value.length + 1) * 8) + \'px\';" onchange="this.setAttribute(\'value\', this.value);"></td> <td class="varvalue"><img onclick="deleteBox(this)" style="  filter: grayscale(100%);  width: 24px;" src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/basket-64.png"><input type="text" value="0" onkeypress="this.style.width = ((this.value.length + 1) * 8) + \'px\'" onchange="this.setAttribute(\'value\', this.value);"></td> '
+        }
+        function deleteTable(table) {
+            table.parentNode.parentNode.parentNode.outerHTML = "";
+        }
+
+
+        function exportButton() {
+            for (var i = 0; i < document.querySelectorAll(".deleteRow").length; i++) {
+                document.querySelectorAll(".deleteRow")[i].style.display = "none";
+            }
+            for (var i = 0; i < document.querySelectorAll("button").length; i++) {
+                document.querySelectorAll("button")[i].style.display = "none";
+            }
+            for (var i = 0; i < document.querySelectorAll("img").length; i++) {
+                document.querySelectorAll("img")[i].style.display = "none";
+            }
+            for (var i = 0; i < document.querySelectorAll(".headline").length; i++) {
+                document.querySelectorAll(".headline")[i].style.height = "70px";
+            }
+            for (var i = 0; i < document.querySelectorAll("table").length; i++) {
+                document.querySelectorAll("table")[i].classList.add("exportable");
+            }
+            var temp = document.getElementById("arrowsHolder").innerHTML;
+            setTimeout(() => {
+                document.getElementById("arrowsHolder").innerHTML = temp;
+            }, 200);
+
+
+
+        }
+        // create DIV element and append to the table cell
+        function createCell(cell, text, style) {
+            var div = document.createElement('div'), // create DIV element
+                txt = document.createTextNode(text); // create text node
+            div.appendChild(txt);                    // append text node to the DIV
+            div.setAttribute('class', style);        // set DIV class attribute
+            div.setAttribute('className', style);    // set DIV class attribute for IE (?!)
+            cell.appendChild(div);                   // append DIV to the table cell
+        }
+
+        // append column to the HTML table
+        function appendColumn() {
+            var tbl = document.getElementById('main'), // table reference
+                i;
+            // open loop for each row and append cell
+            for (i = 0; i < tbl.rows.length; i++) {
+                createCell(tbl.rows[i].insertCell(tbl.rows[i].cells.length), i, 'col');
+            }
+        }
+
+        // delete table rows with index greater then 0
+        function deleteRows() {
+            var tbl = document.getElementById('main'), // table reference
+                lastRow = tbl.rows.length - 1,             // set the last row index
+                i;
+            // delete rows with index greater then 0
+            for (i = lastRow; i > 0; i--) {
+                tbl.deleteRow(i);
+            }
+        }
+
+        // delete table columns with index greater then 0
+        function deleteColumns() {
+            var tbl = document.getElementById('main'), // table reference
+                lastCol = tbl.rows[0].cells.length - 1,    // set the last column index
+                i, j;
+            // delete cells with index greater then 0 (for each row)
+            for (i = 0; i < tbl.rows.length; i++) {
+                for (j = lastCol; j > 0; j--) {
+                    tbl.rows[i].deleteCell(j);
+                }
+            }
+        }
+
+        function insertAfter(newNode, referenceNode) {
+            referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
+        }
+
+    </script>
+</body>
+
+</html>

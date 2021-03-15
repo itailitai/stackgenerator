@@ -11,6 +11,8 @@
     <title>stacks creator</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="domarrow.css" />
+    <script type="text/javascript" src="domarrow.js"></script>
 
     <style>
         table,
@@ -98,6 +100,41 @@
             align-items: center;
             justify-content: center;
         }
+
+        .exportable {
+            width: 200px;
+        }
+
+        button {
+            display: inline-block;
+            padding: 0.5em 1.45em;
+            margin: 0.1em;
+            border: 0.15em solid #CCCCCC;
+            box-sizing: border-box;
+            text-decoration: none;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            font-weight: 400;
+            color: #000000;
+            background-color: #CCCCCC;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        button:hover {
+            border-color: #7a7a7a;
+        }
+
+        button:active {
+            background-color: #999999;
+        }
+
+        @media all and (max-width:30em) {
+            button {
+                display: block;
+                margin: 0.2em auto;
+            }
+        }
     </style>
 </head>
 
@@ -115,8 +152,11 @@
 
             </div>
             <div>
-                <button onclick="javascript:appendRow(this)">הוספת קומה</button>
+                <button id="connect" onclick="javascript:connectStack(this)">ערך למחסנית מימין</button>
                 <button onclick="javascript:add_column(this)">הוסף מחסנית</button>
+                <button onclick="javascript:appendRow(this)">הוספת קומה</button>
+
+
                 <br><br>
                 <table id="main">
                     <tr id="row1">
@@ -154,11 +194,28 @@
                 </table>
             </div>
         </div>
+
     </div>
+
+    <button id='export' style="margin-top: 20px; margin-left: 200px;" onclick="exportButton()">ייצא כתמונה</button>
+    <div id="arrowsHolder"></div>
     <script>
         var rowids = 2;
         var areaids = 2;
         // append row to the HTML table
+        function connectStack(el) {
+            var currentArea = el.parentNode.parentNode;
+            var allAreas = Array.prototype.slice.call(currentArea.parentNode.querySelectorAll(".area"));
+            var index = allAreas.indexOf(currentArea);
+            if (typeof allAreas[parseInt(index) + 1] === 'undefined')
+                alert("can not connect");
+            else {
+                var name = window.prompt("ערך עובר:");
+                while (name === "")
+                    var name = window.prompt("ערך עובר:");
+                document.getElementById("arrowsHolder").innerHTML += "<connection from=\"#" + currentArea.id + "\" to=\"#" + allAreas[parseInt(index) + 1].id + "\" color=\"black\" fromX=\"1\" fromY=\"0.25\" toY=\"0.25\" toX=\"0.25\" tail><p onclick='changeTitle(this)'>" + name + "</p></connection>"
+            }
+        }
         function appendRow(el) {
             var tbl = el.parentNode.querySelector('table');
             var row = tbl.insertRow(0);
@@ -166,9 +223,10 @@
             row.id = "row" + rowids;
             row.innerHTML = row.parentNode.querySelectorAll('tr')[row.parentNode.querySelectorAll('tr').length - 1].innerHTML;
             row.insertAdjacentHTML('afterend', "<td class='seperator' id='" + "seperator_row" + rowids + "' colspan=\"100%\" style=\"padding:0;\"></td></div>");
-            var name = window.prompt("שם הקומה:");
-            while (name === "")
-                var name = window.prompt("שם הקומה:");
+            // var name = window.prompt("שם הקומה:");
+            // while (name === "")
+            //     var name = window.prompt("שם הקומה:");
+            var name = "sample";
             tbl.parentNode.parentNode.querySelector(".headlines").innerHTML = "<h5 onclick=\"changeTitle(this)\" class='headline' id='h_" + rowids + "'>" + name + "</h5>" + tbl.parentNode.parentNode.querySelector(".headlines").innerHTML
             rowids++;
         }
@@ -185,25 +243,36 @@
                 return false;
             }
 
-            if (el.parentNode.isEqualNode(el.parentNode.parentNode.querySelectorAll("tr")[el.parentNode.parentNode.querySelectorAll("tr").length - 1])) {
+            if (el.parentNode.parentNode.isEqualNode(el.parentNode.parentNode.parentNode.querySelectorAll("tr")[el.parentNode.parentNode.parentNode.querySelectorAll("tr").length - 1])) {
                 console.log("check");
-                var seperators = el.parentNode.parentNode.querySelectorAll(".seperator");
-                seperators[seperators.length - 1].parentNode.outerHTML = "";
+                if (el.parentNode.parentNode.parentNode.querySelectorAll("tr").length <= 1)
+                    deleteTable(el.parentNode.parentNode.parentNode);
+                else {
+                    var seperators = el.parentNode.parentNode.parentNode.querySelectorAll(".seperator");
+                    seperators[seperators.length - 1].parentNode.outerHTML = "";
+                }
+
             }
 
             if (el.parentNode.parentNode.parentNode.querySelectorAll("tr").length <= 1) {
-
+                var id = el.parentNode.parentNode.id.slice(-1);
+                console.log(id);
+                var name = "#seperator_row" + id;
+                // el.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#h_" + id).outerHTML = "";
                 deleteTable(el.parentNode.parentNode.parentNode);
             }
             else {
                 var id = el.parentNode.parentNode.id.slice(-1);
+                console.log(id);
                 var name = "#seperator_row" + id;
                 try {
+                    console.log(el.parentNode.parentNode.parentNode.parentNode);
                     el.parentNode.parentNode.parentNode.parentNode.querySelector(name).parentNode.outerHTML = "";
                 }
                 catch {
 
                 }
+                console.log(name);
                 console.log(el.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#h_" + id)); //area
 
                 el.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#h_" + id).outerHTML = "";
@@ -213,9 +282,9 @@
         }
 
         function changeTitle(title) {
-            var name = window.prompt("הכנס שם חדש:");
+            var name = window.prompt("הכנס ערך חדש:");
             while (name === "")
-                var name = window.prompt("הכנס שם חדש:");
+                var name = window.prompt("הכנס ערך חדש:");
             title.innerHTML = name;
         }
 
@@ -231,10 +300,34 @@
             row.innerHTML += '<td class="varname" ><input type="text" value="sample" style="width:45px;" onkeypress="this.style.width = ((this.value.length + 1) * 8) + \'px\';" onchange="this.setAttribute(\'value\', this.value);"></td> <td class="varvalue"><img onclick="deleteBox(this)" style="  filter: grayscale(100%);  width: 24px;" src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/basket-64.png"><input type="text" value="0" onkeypress="this.style.width = ((this.value.length + 1) * 8) + \'px\'" onchange="this.setAttribute(\'value\', this.value);"></td> '
         }
         function deleteTable(table) {
-            table.parentNode.parentNode.outerHTML = "";
+            table.parentNode.parentNode.parentNode.outerHTML = "";
         }
 
 
+        function exportButton() {
+            for (var i = 0; i < document.querySelectorAll(".deleteRow").length; i++) {
+                document.querySelectorAll(".deleteRow")[i].style.display = "none";
+            }
+            for (var i = 0; i < document.querySelectorAll("button").length; i++) {
+                document.querySelectorAll("button")[i].style.display = "none";
+            }
+            for (var i = 0; i < document.querySelectorAll("img").length; i++) {
+                document.querySelectorAll("img")[i].style.display = "none";
+            }
+            for (var i = 0; i < document.querySelectorAll(".headline").length; i++) {
+                document.querySelectorAll(".headline")[i].style.height = "70px";
+            }
+            for (var i = 0; i < document.querySelectorAll("table").length; i++) {
+                document.querySelectorAll("table")[i].classList.add("exportable");
+            }
+            var temp = document.getElementById("arrowsHolder").innerHTML;
+            setTimeout(() => {
+                document.getElementById("arrowsHolder").innerHTML = temp;
+            }, 200);
+
+
+
+        }
         // create DIV element and append to the table cell
         function createCell(cell, text, style) {
             var div = document.createElement('div'), // create DIV element

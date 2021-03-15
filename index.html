@@ -32,6 +32,10 @@
             padding: 10px;
         }
 
+        td:first-child {
+            width: 33%;
+        }
+
         tr>td {
             padding-bottom: 1em;
             padding: 15px;
@@ -63,6 +67,16 @@
         .deleteRow {
             border: none;
             cursor: pointer;
+            border: 1px solid #cccccc;
+            background: #f7f7f7;
+        }
+
+        td:hover {
+            background: #fbfbfb;
+        }
+
+        .deleteRow:hover {
+            background: #f1eeee;
         }
 
         .area {
@@ -75,16 +89,14 @@
         }
 
         .headline {
-            width: 1px;
-            word-wrap: break-word;
             margin-right: 15px;
             margin-left: 35px;
             height: 89px;
-            margin-bottom: 0;
+            margin-bottom: 10px;
             display: flex;
             flex-flow: column;
-            align-items: stretch;
-
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
@@ -155,7 +167,7 @@
             row.innerHTML = row.parentNode.querySelectorAll('tr')[row.parentNode.querySelectorAll('tr').length - 1].innerHTML;
             row.insertAdjacentHTML('afterend', "<td class='seperator' id='" + "seperator_row" + rowids + "' colspan=\"100%\" style=\"padding:0;\"></td></div>");
             var name = window.prompt("שם הקומה:");
-            tbl.parentNode.parentNode.querySelector(".headlines").innerHTML = "<h5 class='headline' id='h_" + rowids + "'>" + name + "</h5>" + tbl.parentNode.parentNode.querySelector(".headlines").innerHTML
+            tbl.parentNode.parentNode.querySelector(".headlines").innerHTML = "<h5 onclick=\"changeTitle(this)\" class='headline' id='h_" + rowids + "'>" + name + "</h5>" + tbl.parentNode.parentNode.querySelector(".headlines").innerHTML
             rowids++;
         }
 
@@ -176,23 +188,24 @@
                 var seperators = el.parentNode.parentNode.querySelectorAll(".seperator");
                 seperators[seperators.length - 1].parentNode.outerHTML = "";
             }
-            if (el.parentNode.parentNode.querySelectorAll("tr").length <= 1) {
-                console.log("last one");
+
+            if (el.parentNode.parentNode.parentNode.querySelectorAll("tr").length <= 1) {
+
                 deleteTable(el.parentNode.parentNode.parentNode);
             }
             else {
-                var id = el.parentNode.id.slice(-1);
+                var id = el.parentNode.parentNode.id.slice(-1);
                 var name = "#seperator_row" + id;
                 try {
-                    el.parentNode.parentNode.parentNode.querySelector(name).parentNode.outerHTML = "";
+                    el.parentNode.parentNode.parentNode.parentNode.querySelector(name).parentNode.outerHTML = "";
                 }
                 catch {
 
                 }
-                console.log(el.parentNode.parentNode.parentNode.parentNode.parentNode); //area
+                console.log(el.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#h_" + id)); //area
 
-                el.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#h_" + id).outerHTML = "";
-                el.parentNode.parentNode.removeChild(el.parentNode);
+                el.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.querySelector("#h_" + id).outerHTML = "";
+                el.parentNode.parentNode.parentNode.removeChild(el.parentNode.parentNode);
             }
 
         }

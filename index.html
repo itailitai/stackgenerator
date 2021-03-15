@@ -91,7 +91,7 @@
         .headline {
             margin-right: 15px;
             margin-left: 35px;
-            height: 89px;
+            height: 100px;
             margin-bottom: 10px;
             display: flex;
             flex-flow: column;
@@ -167,6 +167,8 @@
             row.innerHTML = row.parentNode.querySelectorAll('tr')[row.parentNode.querySelectorAll('tr').length - 1].innerHTML;
             row.insertAdjacentHTML('afterend', "<td class='seperator' id='" + "seperator_row" + rowids + "' colspan=\"100%\" style=\"padding:0;\"></td></div>");
             var name = window.prompt("שם הקומה:");
+            while (name === "")
+                var name = window.prompt("שם הקומה:");
             tbl.parentNode.parentNode.querySelector(".headlines").innerHTML = "<h5 onclick=\"changeTitle(this)\" class='headline' id='h_" + rowids + "'>" + name + "</h5>" + tbl.parentNode.parentNode.querySelector(".headlines").innerHTML
             rowids++;
         }
@@ -212,6 +214,8 @@
 
         function changeTitle(title) {
             var name = window.prompt("הכנס שם חדש:");
+            while (name === "")
+                var name = window.prompt("הכנס שם חדש:");
             title.innerHTML = name;
         }
 

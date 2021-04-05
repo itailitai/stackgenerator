@@ -164,13 +164,15 @@
                                 src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/basket-64.png">
                             <img onclick="addBox(this)" style="width: 32px;"
                                 src="https://cdn3.iconfinder.com/data/icons/flat-circle-content/512/flat-style-circle-add-2-64.png">
+
                         </td>
 
                         <td class="varname"><input type="text" value="foo"
                                 onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';"
                                 onchange="this.setAttribute('value', this.value);"></td>
-                        <td class="varvalue"><img onclick="deleteBox(this)"
-                                style=" filter: grayscale(100%);   width: 24px;"
+                        <td class="varvalue"> <img onclick="addHeap(this)" style="width: 32px;"
+                                src="https://cdn0.iconfinder.com/data/icons/miscellaneous-167-solid/128/pile_heap_agglomeration_hoard_grow_increase_magazine_confidential_paper_sheet-64.png"><img
+                                onclick="deleteBox(this)" style=" filter: grayscale(100%);   width: 24px;"
                                 src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/basket-64.png"><input
                                 type="text" value="0"
                                 onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px'"
@@ -180,8 +182,9 @@
                         <td class="varname"><input type="text" value="bar"
                                 onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px';"
                                 onchange="this.setAttribute('value', this.value);"></td>
-                        <td class="varvalue"><img onclick="deleteBox(this)"
-                                style="  filter: grayscale(100%);  width: 24px;"
+                        <td class="varvalue"> <img onclick="addHeap(this)" style="width: 32px;"
+                                src="https://cdn0.iconfinder.com/data/icons/miscellaneous-167-solid/128/pile_heap_agglomeration_hoard_grow_increase_magazine_confidential_paper_sheet-64.png"><img
+                                onclick="deleteBox(this)" style="  filter: grayscale(100%);  width: 24px;"
                                 src="https://cdn4.iconfinder.com/data/icons/evil-icons-user-interface/64/basket-64.png"><input
                                 type="text" value="0"
                                 onkeypress="this.style.width = ((this.value.length + 1) * 8) + 'px'"
@@ -216,6 +219,10 @@
                 document.getElementById("arrowsHolder").innerHTML += "<connection from=\"#" + currentArea.id + "\" to=\"#" + allAreas[parseInt(index) + 1].id + "\" color=\"black\" fromX=\"1\" fromY=\"0.25\" toY=\"0.25\" toX=\"0.25\" tail><p onclick='changeTitle(this)'>" + name + "</p></connection>"
             }
         }
+
+        function connectHeap(el) {
+            document.getElementById("arrowsHolder").innerHTML += "<connection from=\"#heapid\" to=\"#" + document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].id + "\" color=\"black\" fromX=\"1\" fromY=\"0.25\" toY=\"0.25\" toX=\"0.25\" tail><p onclick='changeTitle(this)'></p></connection>"
+        }
         function appendRow(el) {
             var tbl = el.parentNode.querySelector('table');
             var row = tbl.insertRow(0);
@@ -232,8 +239,28 @@
         }
 
         function add_column(el) {
+            document.getElementById("container").innerHTML += '<div id="area_' + areaids + '" class="area">' + document.getElementById("container").querySelectorAll(".area")[0].innerHTML + '</div>';
+            document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].id = "main_" + (areaids);
+            areaids++;
+        }
+
+        function addHeap(el) {
+            el.parentNode.id = 'heapid';
             document.getElementById("container").innerHTML += '<div id="area_' + areaids + '" class="area">' + document.getElementById("container").querySelectorAll(".area")[document.getElementById("container").querySelectorAll(".area").length - 1].innerHTML + '</div>';
             document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].id = "main_" + (areaids);
+            document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].style.borderTop = "1px solid black";
+            document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].querySelector(".deleteRow").children[1].outerHTML = "";
+            document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].parentNode.parentNode.querySelector(".headlines").outerHTML = "";
+            for (var i = document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].querySelectorAll("tr").length; i > 1; i--) {
+                console.log("1");
+                document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].querySelectorAll("tr")[i - 1].outerHTML = "";
+            }
+
+            for (var i = 0; i < 3; i++) {
+
+                document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].parentNode.querySelectorAll("button")[0].outerHTML = "";
+            }
+            connectHeap(el);
             areaids++;
         }
 
@@ -323,7 +350,7 @@
             var temp = document.getElementById("arrowsHolder").innerHTML;
             setTimeout(() => {
                 document.getElementById("arrowsHolder").innerHTML = temp;
-            }, 200);
+            }, 500);
 
 
 

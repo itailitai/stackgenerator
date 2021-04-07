@@ -205,6 +205,7 @@
     <script>
         var rowids = 2;
         var areaids = 2;
+        var heapids = 1;
         // append row to the HTML table
         function connectStack(el) {
             var currentArea = el.parentNode.parentNode;
@@ -221,7 +222,8 @@
         }
 
         function connectHeap(el) {
-            document.getElementById("arrowsHolder").innerHTML += "<connection from=\"#heapid\" to=\"#" + document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].id + "\" color=\"black\" fromX=\"1\" fromY=\"0.25\" toY=\"0.25\" toX=\"0.25\" tail><p onclick='changeTitle(this)'></p></connection>"
+            var id = "#heapid" + (parseInt(heapids) - 1);
+            document.getElementById("arrowsHolder").innerHTML += "<connection from=\"" + id + "\" to=\"#" + document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].id + "\" color=\"black\" fromX=\"1\" fromY=\"0.25\" toY=\"0.25\" toX=\"0.25\" tail><p onclick='changeTitle(this)'></p></connection>"
         }
         function appendRow(el) {
             var tbl = el.parentNode.querySelector('table');
@@ -245,23 +247,29 @@
         }
 
         function addHeap(el) {
-            el.parentNode.id = 'heapid';
+            el.parentNode.id = 'heapid' + heapids;
             document.getElementById("container").innerHTML += '<div id="area_' + areaids + '" class="area">' + document.getElementById("container").querySelectorAll(".area")[document.getElementById("container").querySelectorAll(".area").length - 1].innerHTML + '</div>';
             document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].id = "main_" + (areaids);
             document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].style.borderTop = "1px solid black";
-            document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].querySelector(".deleteRow").children[1].outerHTML = "";
+            // document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].querySelector(".deleteRow").children[1].outerHTML = "";
             document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].parentNode.parentNode.querySelector(".headlines").outerHTML = "";
             for (var i = document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].querySelectorAll("tr").length; i > 1; i--) {
                 console.log("1");
                 document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].querySelectorAll("tr")[i - 1].outerHTML = "";
             }
 
+            for (var i = 0; i < 2; i++) {
+                document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].querySelector("tr").querySelectorAll(".varvalue")[i].children[0].outerHTML = "";
+            }
+
             for (var i = 0; i < 3; i++) {
 
                 document.querySelectorAll("table")[document.querySelectorAll("table").length - 1].parentNode.querySelectorAll("button")[0].outerHTML = "";
             }
-            connectHeap(el);
+            heapids++;
             areaids++;
+            connectHeap(el);
+
         }
 
         function deleteRow(el) {
